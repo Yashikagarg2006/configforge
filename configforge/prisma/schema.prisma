@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  passwordHash  String
+  createdAt     DateTime        @default(now())
+  configs       AppConfig[]
+  records       DynamicRecord[]
+  notifications Notification[]
+}
+
+model AppConfig {
+  id        String          @id @default(cuid())
+  userId    String
+  name      String
+  config    Json
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  records   DynamicRecord[]
+}
+
+model DynamicRecord {
+  id          String    @id @default(cuid())
+  userId      String
+  appConfigId String
+  tableName   String
+  data        Json
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appConfig   AppConfig @relation(fields: [appConfigId], references: [id], onDelete: Cascade)
+
+  @@index([userId, tableName])
+  @@index([appConfigId, tableName])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+}
