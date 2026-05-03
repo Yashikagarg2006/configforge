@@ -79,8 +79,17 @@ export async function GET(
     }),
   ]);
 
-  return NextResponse.json({ records: records.map((r) => ({ id: r.id, ...((r.data as object) ?? {}), createdAt: r.createdAt, updatedAt: r.updatedAt })), total, page, limit });
-}
+  return NextResponse.json({
+  records: records.map((r: any) => ({
+    id: r.id,
+    ...((r.data as object) ?? {}),
+    createdAt: r.createdAt,
+    updatedAt: r.updatedAt
+  })),
+  total,
+  page,
+  limit
+});
 
 // POST /api/dynamic/[resource]
 export async function POST(

@@ -21,7 +21,6 @@ const FEATURES = [
 
 export default async function LandingPage() {
   const session = await getServerSession(authOptions);
-  if (session?.user) redirect("/dashboard");
 
   return (
     <div className="min-h-screen">
