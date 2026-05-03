@@ -20,6 +20,12 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+eexport const config = {
+  matcher: [
+    "/dashboard/:path*",
+    "/config-editor/:path*",
+    "/app/:path*",
+    "/csv-import/:path*",
+    "/notifications/:path*",
+  ],
 };
