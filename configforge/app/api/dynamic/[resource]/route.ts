@@ -90,7 +90,7 @@ export async function GET(
   page,
   limit
 });
-
+}
 // POST /api/dynamic/[resource]
 export async function POST(
   req: NextRequest,
